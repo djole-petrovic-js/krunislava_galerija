@@ -1,57 +1,57 @@
-var contactModule=(function(){
-  "use strict";
-  var doc=document;
-  var vote_btn=doc.getElementById('pollbtn');
-  var vote_wreaper=doc.getElementById('poll');
-  var vote_inputs=Array.from(vote_wreaper.getElementsByClassName('vote_c'));
-  var target,last_selected_input;
-  var checking=false;
+( function(doc){
 
-  vote_btn.addEventListener('click',vote,false);
-  vote_wreaper.addEventListener('click',highlightLabel,false);
+  'use strict';
+
+  var
+    lastSelectedInput = null;
+    voteBtn           = doc.getElementById('pollbtn'),
+    votingWreaper     = doc.getElementById('poll'),
+    voteInputs        = Array.from(votingWreaper.getElementsByClassName('vote_c')),
+    checking          = false;
+
+  voteBtn      .addEventListener('click',vote,false);
+  votingWreaper.addEventListener('click',highlightLabel,false);
 
   function highlightLabel(event) {
-    target=event.target;
-    if (checking && target.tagName==='LABEL') {
-      last_selected_input.setAttribute('class','labelfont');
+    var target = event.target;
+
+    if ( checking && target.tagName === 'LABEL' ) {
+      lastSelectedInput.setAttribute('class','labelfont');
     }
 
-    if (target.tagName==='LABEL') {
-      target.previousElementSibling.checked=true;
+    if ( target.tagName === 'LABEL' ) {
+      target.previousElementSibling.checked = true;
       target.setAttribute('class','votechecked');
-      checking=true;
-      last_selected_input=target;
+      checking = true;
+      lastSelectedInput = target;
     }
   }
 
   function vote() {
-    var voted;
+    var userVote;
 
-    var cookie = document.cookie;
-
-    if ( !cookie ) {
-
-      vote_inputs.forEach(function(x){
-        if (x.checked) voted = x.value;
+    if ( !document.cookie ) {
+      voteInputs.forEach(function(x){
+        if ( x.checked ) userVote = x.value;
       });
 
-      document.cookie = "voted=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-
+      document.cookie = "vote=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
     }
 
-    vote_wreaper.innerHTML='Молимо ,сачекајте...'
-    vote_wreaper.style.textAlign = "center";
+    votingWreaper.innerHTML = 'Молимо ,сачекајте...'
+    votingWreaper.style.textAlign = "center";
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET','poll/poll.php?vote='+voted,true);
-    xhr.onreadystatechange=function() {
-      if (xhr.readyState===4 && xhr.status===200) {
-        var response=xhr.responseText;
-        vote_wreaper.innerHTML=response;
+
+    xhr.open('GET','poll/poll.php?vote=' + userVote,true);
+
+    xhr.onreadystatechange = function() {
+      if ( xhr.readyState === 4 && xhr.status === 200 ) {
+        votingWreaper.innerHTML=xhr.responseText;
       }
     }
 
     xhr.send();
   }
 
-})();
+})(document);

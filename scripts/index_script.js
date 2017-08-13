@@ -1,11 +1,13 @@
-var indexModule=(function(){
-  "use strict";
-  var w1=document.getElementById('wreaper-left');
-  var w2=document.getElementById('wreaper-right');
+( function(doc){
+	
+  'use strict';
+  
+  var 
+  	w1 = doc.getElementById('wreaper-left'),
+    w2 = doc.getElementById('wreaper-right');
 
   setTimeout(function(){
     w1.style.opacity=1;
     w2.style.opacity=1;
   },10);
-  
-})();
+})(document);
