@@ -1,9 +1,9 @@
 ( function(doc){
-	
+  
   'use strict';
   
   var 
-  	w1 = doc.getElementById('wreaper-left'),
+    w1 = doc.getElementById('wreaper-left'),
     w2 = doc.getElementById('wreaper-right');
 
   setTimeout(function(){
